@@ -8,24 +8,24 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   return (
-    <header className="border-b border-gray-200">
+    <header className="border-b border-gray-200 backdrop-blur-md bg-white/90 sticky top-0 z-50">
       <PageWrapper className="py-3">
         <div className="flex justify-between items-center">
           <div className="text-2xl font-medium tracking-tight">
             <Link href="/">
-              <a className="hover:opacity-80 transition-opacity">
+              <span className="hover:opacity-80 transition-opacity cursor-pointer">
                 <span className="text-[#0071e3]">P</span>rocV App
-              </a>
+              </span>
             </Link>
           </div>
           
           <nav className="hidden md:flex space-x-8 text-sm">
             <Link href="/">
-              <a className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Início</a>
+              <span className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors cursor-pointer">Início</span>
             </Link>
-            <a href="#" className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Como funciona</a>
-            <a href="#" className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Documentação</a>
-            <a href="#" className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Suporte</a>
+            <span onClick={() => document.getElementById('column-mapping-section')?.scrollIntoView({behavior: 'smooth'})} className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors cursor-pointer">Como funciona</span>
+            <span className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors cursor-pointer">Documentação</span>
+            <span className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors cursor-pointer">Suporte</span>
           </nav>
           
           <button 
@@ -45,11 +45,11 @@ export default function Header() {
         )}>
           <nav className="flex flex-col space-y-3 text-sm">
             <Link href="/">
-              <a className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Início</a>
+              <span className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors cursor-pointer">Início</span>
             </Link>
-            <a href="#" className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Como funciona</a>
-            <a href="#" className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Documentação</a>
-            <a href="#" className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Suporte</a>
+            <span onClick={() => document.getElementById('column-mapping-section')?.scrollIntoView({behavior: 'smooth'})} className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors cursor-pointer">Como funciona</span>
+            <span className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors cursor-pointer">Documentação</span>
+            <span className="text-[#1d1d1f] hover:text-[#0071e3] transition-colors cursor-pointer">Suporte</span>
           </nav>
         </div>
       </PageWrapper>
