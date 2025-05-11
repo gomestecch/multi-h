@@ -25,7 +25,7 @@ export default function Results({ resultData }: ResultsProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
 
-  // Get all unique column names from the results
+  // Obter todos os nomes de colunas únicos dos resultados
   const allColumns = useMemo(() => {
     if (!resultData.results.length) return [];
     const columns = new Set<string>();
@@ -39,18 +39,18 @@ export default function Results({ resultData }: ResultsProps) {
     return Array.from(columns);
   }, [resultData.results]);
   
-  // Filter results based on view and search term
+  // Filtrar resultados com base na visualização e termo de pesquisa
   const filteredResults = useMemo(() => {
     let filtered = [...resultData.results];
     
-    // Filter by view type
+    // Filtrar por tipo de visualização
     if (resultsView === 'matches') {
       filtered = filtered.filter(row => row._hasMatch === true);
     } else if (resultsView === 'non-matches') {
       filtered = filtered.filter(row => row._hasMatch === false);
     }
     
-    // Filter by search term
+    // Filtrar por termo de pesquisa
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(row => {
@@ -61,7 +61,7 @@ export default function Results({ resultData }: ResultsProps) {
       });
     }
     
-    // Sort results
+    // Ordenar resultados
     if (sortBy) {
       filtered.sort((a, b) => {
         const valueA = a[sortBy];
@@ -81,7 +81,7 @@ export default function Results({ resultData }: ResultsProps) {
     return filtered;
   }, [resultData.results, resultsView, searchTerm, sortBy]);
   
-  // Paginate results
+  // Paginar resultados
   const paginatedResults = useMemo(() => {
     const startIndex = (currentPage - 1) * rowsPerPage;
     return filteredResults.slice(startIndex, startIndex + rowsPerPage);
@@ -95,41 +95,41 @@ export default function Results({ resultData }: ResultsProps) {
   
   return (
     <PageWrapper>
-      <h2 className="text-3xl font-semibold mb-2">Results</h2>
+      <h2 className="text-3xl font-semibold mb-2">Resultados</h2>
       <p className="text-[#86868b] mb-8">
-        Found {resultData.totalMatches} matching records and {resultData.totalNonMatches} non-matching records
+        Encontrados {resultData.totalMatches} registros correspondentes e {resultData.totalNonMatches} registros não correspondentes
       </p>
       
       <Card className="overflow-hidden shadow-sm">
-        {/* Results Tabs */}
+        {/* Abas de Resultados */}
         <div className="flex border-b border-gray-200">
           <button 
             className={`px-6 py-4 font-medium ${resultsView === 'all' ? 'text-[#0071e3] border-b-2 border-[#0071e3]' : 'text-[#86868b] hover:text-[#1d1d1f]'}`}
             onClick={() => setResultsView('all')}
           >
-            All Results ({resultData.results.length})
+            Todos os Resultados ({resultData.results.length})
           </button>
           <button 
             className={`px-6 py-4 font-medium ${resultsView === 'matches' ? 'text-[#0071e3] border-b-2 border-[#0071e3]' : 'text-[#86868b] hover:text-[#1d1d1f]'}`}
             onClick={() => setResultsView('matches')}
           >
-            Matches ({resultData.totalMatches})
+            Correspondências ({resultData.totalMatches})
           </button>
           <button 
             className={`px-6 py-4 font-medium ${resultsView === 'non-matches' ? 'text-[#0071e3] border-b-2 border-[#0071e3]' : 'text-[#86868b] hover:text-[#1d1d1f]'}`}
             onClick={() => setResultsView('non-matches')}
           >
-            Non-Matches ({resultData.totalNonMatches})
+            Não Correspondências ({resultData.totalNonMatches})
           </button>
         </div>
         
-        {/* Results Controls */}
+        {/* Controles de Resultados */}
         <div className="flex flex-wrap items-center justify-between p-4 border-b border-gray-200 bg-[#f5f5f7]">
           <div className="flex items-center space-x-4 mb-2 sm:mb-0">
             <div className="relative">
               <Input
                 type="text"
-                placeholder="Search results..."
+                placeholder="Pesquisar resultados..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 rounded-xl"
@@ -139,11 +139,11 @@ export default function Results({ resultData }: ResultsProps) {
             <div className="relative">
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="px-4 py-2 rounded-xl">
-                  <SelectValue placeholder="Sort by column" />
+                  <SelectValue placeholder="Ordenar por coluna" />
                 </SelectTrigger>
                 <SelectContent>
                   {allColumns.map(column => (
-                    <SelectItem key={column} value={column}>Sort by: {column}</SelectItem>
+                    <SelectItem key={column} value={column}>Ordenar por: {column}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -155,12 +155,12 @@ export default function Results({ resultData }: ResultsProps) {
               className="px-4 py-2 text-sm font-medium bg-[#0071e3] hover:bg-[#0077ED] rounded-full"
             >
               <span className="material-icons text-sm align-text-bottom mr-1">file_download</span>
-              Export Results
+              Exportar Resultados
             </Button>
           </div>
         </div>
         
-        {/* Results Table */}
+        {/* Tabela de Resultados */}
         <div className="overflow-x-auto">
           <DataTable
             data={paginatedResults}
@@ -169,16 +169,16 @@ export default function Results({ resultData }: ResultsProps) {
           />
         </div>
         
-        {/* Pagination */}
+        {/* Paginação */}
         <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
           <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
               <p className="text-sm text-[#86868b]">
-                Showing <span className="font-medium">{Math.min(filteredResults.length, 1 + (currentPage - 1) * rowsPerPage)}</span> to <span className="font-medium">{Math.min(filteredResults.length, currentPage * rowsPerPage)}</span> of <span className="font-medium">{filteredResults.length}</span> results
+                Exibindo <span className="font-medium">{Math.min(filteredResults.length, 1 + (currentPage - 1) * rowsPerPage)}</span> a <span className="font-medium">{Math.min(filteredResults.length, currentPage * rowsPerPage)}</span> de <span className="font-medium">{filteredResults.length}</span> resultados
               </p>
             </div>
             <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Paginação">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
@@ -187,11 +187,11 @@ export default function Results({ resultData }: ResultsProps) {
                   <span className="material-icons text-sm">chevron_left</span>
                 </button>
                 
-                {/* Generate page buttons */}
+                {/* Gerar botões de página */}
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                   let pageNum;
                   
-                  // Logic to show current page in the middle when possible
+                  // Lógica para mostrar a página atual no meio quando possível
                   if (totalPages <= 5) {
                     pageNum = i + 1;
                   } else if (currentPage <= 3) {

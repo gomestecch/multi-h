@@ -11,7 +11,7 @@ export function DataTable({ data, columns, showMatch = false }: DataTableProps) 
   if (!data || data.length === 0) {
     return (
       <div className="p-8 text-center">
-        <p className="text-[#86868b]">No results found</p>
+        <p className="text-[#86868b]">Nenhum resultado encontrado</p>
       </div>
     );
   }
@@ -47,13 +47,13 @@ export function DataTable({ data, columns, showMatch = false }: DataTableProps) 
                 return (
                   <TableCell key={column} className="px-6 py-4 whitespace-nowrap text-sm">
                     {isNonMatch ? (
-                      <span className="text-red-500">-- No match found --</span>
+                      <span className="text-red-500">-- Correspondência não encontrada --</span>
                     ) : value === null || value === undefined ? (
-                      <span className="text-red-500">-- No match found --</span>
+                      <span className="text-red-500">-- Correspondência não encontrada --</span>
                     ) : column === 'status' || column === 'Status' || column.includes('status') || column.includes('Status') ? (
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        String(value).toLowerCase().includes('active') ? 'bg-green-100 text-green-800' :
-                        String(value).toLowerCase().includes('pending') ? 'bg-yellow-100 text-yellow-800' :
+                        String(value).toLowerCase().includes('active') || String(value).toLowerCase().includes('ativo') ? 'bg-green-100 text-green-800' :
+                        String(value).toLowerCase().includes('pending') || String(value).toLowerCase().includes('pendente') ? 'bg-yellow-100 text-yellow-800' :
                         'bg-gray-100 text-gray-800'
                       }`}>
                         {value}

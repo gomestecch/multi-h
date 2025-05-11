@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -30,6 +30,12 @@ export default function ColumnMapper({
   const [selectedLookupColumns, setSelectedLookupColumns] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Inicializar todas as colunas como selecionadas por padrão
+  useEffect(() => {
+    setSelectedSourceColumns([...sourceColumns]);
+    setSelectedLookupColumns([...lookupColumns]);
+  }, [sourceColumns, lookupColumns]);
+
   const handleSourceColumnToggle = (column: string, checked: boolean) => {
     if (checked) {
       setSelectedSourceColumns(prev => [...prev, column]);
@@ -49,8 +55,8 @@ export default function ColumnMapper({
   const handleCompareFiles = async () => {
     if (!sourceKeyColumn) {
       toast({
-        title: "Missing key column",
-        description: "Please select a key column for the source file",
+        title: "Coluna chave não selecionada",
+        description: "Por favor, selecione uma coluna chave para o arquivo de origem",
         variant: "destructive"
       });
       return;
@@ -58,8 +64,8 @@ export default function ColumnMapper({
 
     if (!lookupKeyColumn) {
       toast({
-        title: "Missing key column",
-        description: "Please select a key column for the lookup file",
+        title: "Coluna chave não selecionada",
+        description: "Por favor, selecione uma coluna chave para o arquivo de pesquisa",
         variant: "destructive"
       });
       return;
@@ -67,8 +73,8 @@ export default function ColumnMapper({
 
     if (selectedSourceColumns.length === 0) {
       toast({
-        title: "No columns selected",
-        description: "Please select at least one column from the source file",
+        title: "Nenhuma coluna selecionada",
+        description: "Por favor, selecione pelo menos uma coluna do arquivo de origem",
         variant: "destructive"
       });
       return;
@@ -76,8 +82,8 @@ export default function ColumnMapper({
 
     if (selectedLookupColumns.length === 0) {
       toast({
-        title: "No columns selected",
-        description: "Please select at least one column from the lookup file",
+        title: "Nenhuma coluna selecionada",
+        description: "Por favor, selecione pelo menos uma coluna do arquivo de pesquisa",
         variant: "destructive"
       });
       return;
@@ -100,13 +106,13 @@ export default function ColumnMapper({
       onLookupComplete(result);
       
       toast({
-        title: "Comparison complete",
-        description: `Found ${result.totalMatches} matches and ${result.totalNonMatches} non-matches`,
+        title: "Comparação concluída",
+        description: `Encontrados ${result.totalMatches} correspondências e ${result.totalNonMatches} não correspondências`,
       });
     } catch (error) {
       toast({
-        title: "Error performing comparison",
-        description: error instanceof Error ? error.message : "An unexpected error occurred",
+        title: "Erro ao realizar a comparação",
+        description: error instanceof Error ? error.message : "Ocorreu um erro inesperado",
         variant: "destructive"
       });
     } finally {
@@ -116,25 +122,25 @@ export default function ColumnMapper({
 
   return (
     <PageWrapper>
-      <h2 className="text-3xl font-semibold mb-2">Map your columns</h2>
-      <p className="text-[#86868b] mb-8">Select which columns to use for comparison and matching</p>
+      <h2 className="text-3xl font-semibold mb-2">Mapeamento de colunas</h2>
+      <p className="text-[#86868b] mb-8">Selecione quais colunas usar para comparação e correspondência</p>
       
       <Card className="overflow-hidden shadow-sm">
         <CardContent className="p-6">
           <div className="grid md:grid-cols-2 gap-8">
-            {/* File 1 Column Selection */}
+            {/* Seleção de Colunas do Arquivo 1 */}
             <div>
-              <h3 className="font-semibold mb-4">File 1 Columns</h3>
+              <h3 className="font-semibold mb-4">Colunas do Arquivo 1</h3>
               <div className="space-y-4">
-                {/* Key Column Selection */}
+                {/* Seleção de Coluna Chave */}
                 <div>
-                  <Label className="block text-sm text-[#86868b] mb-1">Key Column (for lookup)</Label>
+                  <Label className="block text-sm text-[#86868b] mb-1">Coluna Chave (para procura)</Label>
                   <Select
                     value={sourceKeyColumn}
                     onValueChange={setSourceKeyColumn}
                   >
                     <SelectTrigger className="w-full p-3 rounded-xl">
-                      <SelectValue placeholder="Select column..." />
+                      <SelectValue placeholder="Selecione a coluna..." />
                     </SelectTrigger>
                     <SelectContent>
                       {sourceColumns.map(column => (
@@ -144,17 +150,18 @@ export default function ColumnMapper({
                   </Select>
                 </div>
                 
-                {/* Columns to Include */}
+                {/* Colunas a Incluir */}
                 <div>
-                  <Label className="block text-sm text-[#86868b] mb-1">Columns to Include</Label>
+                  <Label className="block text-sm text-[#86868b] mb-1">Colunas a Incluir</Label>
                   <div className="space-y-2 mt-2">
                     {sourceColumns.map(column => (
                       <div key={column} className="flex items-center">
-                        <Checkbox
+                        <input
+                          type="checkbox"
                           id={`source-col-${column}`}
                           checked={selectedSourceColumns.includes(column)}
-                          onCheckedChange={(checked) => handleSourceColumnToggle(column, !!checked)}
-                          className="h-5 w-5 rounded text-[#0071e3]"
+                          onChange={(e) => handleSourceColumnToggle(column, e.target.checked)}
+                          className="h-5 w-5 rounded text-[#0071e3] accent-[#0071e3]"
                         />
                         <Label 
                           htmlFor={`source-col-${column}`}
@@ -169,19 +176,19 @@ export default function ColumnMapper({
               </div>
             </div>
             
-            {/* File 2 Column Selection */}
+            {/* Seleção de Colunas do Arquivo 2 */}
             <div>
-              <h3 className="font-semibold mb-4">File 2 Columns</h3>
+              <h3 className="font-semibold mb-4">Colunas do Arquivo 2</h3>
               <div className="space-y-4">
-                {/* Key Column Selection */}
+                {/* Seleção de Coluna Chave */}
                 <div>
-                  <Label className="block text-sm text-[#86868b] mb-1">Key Column (for lookup)</Label>
+                  <Label className="block text-sm text-[#86868b] mb-1">Coluna Chave (para procura)</Label>
                   <Select
                     value={lookupKeyColumn}
                     onValueChange={setLookupKeyColumn}
                   >
                     <SelectTrigger className="w-full p-3 rounded-xl">
-                      <SelectValue placeholder="Select column..." />
+                      <SelectValue placeholder="Selecione a coluna..." />
                     </SelectTrigger>
                     <SelectContent>
                       {lookupColumns.map(column => (
@@ -191,17 +198,18 @@ export default function ColumnMapper({
                   </Select>
                 </div>
                 
-                {/* Columns to Include */}
+                {/* Colunas a Incluir */}
                 <div>
-                  <Label className="block text-sm text-[#86868b] mb-1">Columns to Include</Label>
+                  <Label className="block text-sm text-[#86868b] mb-1">Colunas a Incluir</Label>
                   <div className="space-y-2 mt-2">
                     {lookupColumns.map(column => (
                       <div key={column} className="flex items-center">
-                        <Checkbox
+                        <input
+                          type="checkbox"
                           id={`lookup-col-${column}`}
                           checked={selectedLookupColumns.includes(column)}
-                          onCheckedChange={(checked) => handleLookupColumnToggle(column, !!checked)}
-                          className="h-5 w-5 rounded text-[#0071e3]"
+                          onChange={(e) => handleLookupColumnToggle(column, e.target.checked)}
+                          className="h-5 w-5 rounded text-[#0071e3] accent-[#0071e3]"
                         />
                         <Label 
                           htmlFor={`lookup-col-${column}`}
@@ -223,7 +231,7 @@ export default function ColumnMapper({
               className="px-8 py-6 text-lg font-medium bg-[#0071e3] hover:bg-[#0077ED] rounded-full"
               disabled={isProcessing}
             >
-              {isProcessing ? "Processing..." : "Compare Files"}
+              {isProcessing ? "Processando..." : "Comparar Arquivos"}
             </Button>
           </div>
         </CardContent>

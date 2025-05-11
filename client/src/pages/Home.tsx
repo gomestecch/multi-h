@@ -69,40 +69,40 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Header />
       
-      {/* Hero Section */}
+      {/* Seção Hero */}
       <section className="bg-gradient-to-b from-white to-[#f5f5f7] py-16 md:py-24">
         <PageWrapper className="text-center">
           <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4">
-            Compare data.<br />With precision.
+            Compare dados.<br />Com precisão.
           </h1>
           <p className="text-xl text-[#86868b] max-w-2xl mx-auto mb-8">
-            A powerful VLOOKUP tool to compare and analyze data from different files with ease and accuracy.
+            Uma poderosa ferramenta de PROCV para comparar e analisar dados de diferentes arquivos com facilidade e precisão.
           </p>
           <Button 
             onClick={handleStartComparing}
             className="px-8 py-6 text-lg font-medium bg-[#0071e3] hover:bg-[#0077ED] rounded-full"
           >
-            Start comparing
+            Começar a comparar
           </Button>
         </PageWrapper>
       </section>
       
       <main className="flex-grow">
-        {/* File Upload Section */}
+        {/* Seção de Upload de Arquivos */}
         <section id="file-upload-section" className="py-12 md:py-20">
           <PageWrapper>
-            <h2 className="text-3xl font-semibold mb-2">Upload your files</h2>
-            <p className="text-[#86868b] mb-8">Drag and drop or select your CSV or Excel files for comparison</p>
+            <h2 className="text-3xl font-semibold mb-2">Envie seus arquivos</h2>
+            <p className="text-[#86868b] mb-8">Arraste e solte ou selecione seus arquivos CSV ou Excel para comparação</p>
             
             <div className="grid md:grid-cols-2 gap-8">
               <FileUploader
-                title="File 1 (Source)"
+                title="Arquivo 1 (Origem)"
                 file={sourceFile}
                 onUpload={handleSourceFileUpload}
                 onRemove={handleSourceFileRemove}
               />
               <FileUploader
-                title="File 2 (Lookup)"
+                title="Arquivo 2 (Consulta)"
                 file={lookupFile}
                 onUpload={handleLookupFileUpload}
                 onRemove={handleLookupFileRemove}
@@ -111,7 +111,7 @@ export default function Home() {
           </PageWrapper>
         </section>
         
-        {/* Column Mapping Section */}
+        {/* Seção de Mapeamento de Colunas */}
         <section id="column-mapping-section" className={`py-12 md:py-20 ${activeSection === 'upload' ? 'opacity-50 pointer-events-none' : ''}`}>
           {sourceFile && lookupFile && (
             <ColumnMapper
@@ -124,21 +124,21 @@ export default function Home() {
           )}
         </section>
         
-        {/* Results Section */}
+        {/* Seção de Resultados */}
         <section id="results-section" className={`py-12 md:py-20 ${activeSection !== 'results' ? 'opacity-50 pointer-events-none' : ''}`}>
           {resultData && (
             <Results resultData={resultData} />
           )}
         </section>
         
-        {/* Features Section */}
+        {/* Seção de Recursos */}
         <Features />
         
-        {/* How It Works Section */}
+        {/* Seção Como Funciona */}
         <HowItWorks />
       </main>
       
-      {/* Call to Action */}
+      {/* Chamada para Ação */}
       <CallToAction onStartNow={handleStartComparing} />
       
       <Footer />

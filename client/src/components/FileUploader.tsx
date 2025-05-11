@@ -23,7 +23,7 @@ export default function FileUploader({ title, file, onUpload, onRemove }: FileUp
     try {
       setIsUploading(true);
       
-      // Get file columns from backend
+      // Obter colunas do arquivo do backend
       const columnData = await uploadFile(file);
       
       const fileWithPreview: FileWithPreview = {
@@ -35,13 +35,13 @@ export default function FileUploader({ title, file, onUpload, onRemove }: FileUp
       
       onUpload(fileWithPreview, columnData.columns);
       toast({
-        title: "File uploaded successfully",
-        description: `Found ${columnData.columns.length} columns in ${file.name}`,
+        title: "Arquivo enviado com sucesso",
+        description: `Encontradas ${columnData.columns.length} colunas em ${file.name}`,
       });
     } catch (error) {
       toast({
-        title: "Error uploading file",
-        description: error instanceof Error ? error.message : "An unexpected error occurred",
+        title: "Erro ao enviar arquivo",
+        description: error instanceof Error ? error.message : "Ocorreu um erro inesperado",
         variant: "destructive"
       });
     } finally {
@@ -81,21 +81,21 @@ export default function FileUploader({ title, file, onUpload, onRemove }: FileUp
             {isUploading ? (
               <>
                 <span className="material-icons text-[#86868b] text-5xl mb-4">hourglass_empty</span>
-                <p className="mb-2">Uploading file...</p>
+                <p className="mb-2">Enviando arquivo...</p>
               </>
             ) : (
               <>
                 <span className="material-icons text-[#86868b] text-5xl mb-4">cloud_upload</span>
-                <p className="mb-2">Drag & drop your file here</p>
-                <p className="text-[#86868b] text-sm mb-4">or</p>
+                <p className="mb-2">Arraste e solte seu arquivo aqui</p>
+                <p className="text-[#86868b] text-sm mb-4">ou</p>
                 <Button 
                   type="button"
                   className="bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full px-6 py-2"
                 >
-                  Browse Files
+                  Procurar Arquivos
                   <input {...getInputProps()} />
                 </Button>
-                <p className="mt-4 text-sm text-[#86868b]">Supports .csv, .xlsx, .xls</p>
+                <p className="mt-4 text-sm text-[#86868b]">Suporta .csv, .xlsx, .xls</p>
               </>
             )}
           </div>
