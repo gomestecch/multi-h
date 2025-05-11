@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -29,12 +29,6 @@ export default function ColumnMapper({
   const [selectedSourceColumns, setSelectedSourceColumns] = useState<string[]>([]);
   const [selectedLookupColumns, setSelectedLookupColumns] = useState<string[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
-
-  // Inicializar todas as colunas como selecionadas por padrão
-  useEffect(() => {
-    setSelectedSourceColumns([...sourceColumns]);
-    setSelectedLookupColumns([...lookupColumns]);
-  }, [sourceColumns, lookupColumns]);
 
   const handleSourceColumnToggle = (column: string, checked: boolean) => {
     if (checked) {
@@ -229,7 +223,6 @@ export default function ColumnMapper({
             <Button 
               onClick={handleCompareFiles}
               className="px-8 py-6 text-lg font-medium bg-[#0071e3] hover:bg-[#0077ED] rounded-full"
-              disabled={isProcessing}
             >
               {isProcessing ? "Processando..." : "Comparar Arquivos"}
             </Button>
