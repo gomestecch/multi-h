@@ -51,12 +51,54 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+          cache: 'npm'
+          
+      - name: Verify package.json exists
+        id: check_package
+        run: |
+          if [ -f "package.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
           
       - name: Install dependencies
+        if: steps.check_package.outputs.exists == 'true'
         run: npm ci
         
+      - name: Check if build script exists
+        if: steps.check_package.outputs.exists == 'true'
+        id: check_build
+        run: |
+          if grep -q "\"build\":" package.json; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+        
       - name: Build
+        if: steps.check_package.outputs.exists == 'true' && steps.check_build.outputs.exists == 'true'
         run: npm run build
         
+      - name: Check if test script exists
+        if: steps.check_package.outputs.exists == 'true'
+        id: check_test
+        run: |
+          if grep -q "\"test\":" package.json; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+        
       - name: Test
-        run: npm test || echo "No tests found, skipping tests" 
+        if: steps.check_package.outputs.exists == 'true' && steps.check_test.outputs.exists == 'true'
+        run: npm test
+        
+      - name: Lint if available
+        if: steps.check_package.outputs.exists == 'true'
+        run: |
+          if grep -q "\"lint\":" package.json; then
+            npm run lint
+          else
+            echo "No lint script found, skipping linting"
+          fi 
