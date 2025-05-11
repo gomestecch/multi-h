@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
@@ -14,6 +13,38 @@ interface ColumnMapperProps {
   sourceColumns: string[];
   lookupColumns: string[];
   onLookupComplete: (data: any) => void;
+}
+
+// Componente CheckboxItem que funciona com garantia
+function CheckboxItem({ 
+  id, 
+  label, 
+  checked, 
+  onChange 
+}: { 
+  id: string; 
+  label: string; 
+  checked: boolean; 
+  onChange: (checked: boolean) => void 
+}) {
+  return (
+    <div className="flex items-center">
+      <div className="flex items-center h-5">
+        <input
+          id={id}
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => onChange(e.target.checked)}
+          className="h-5 w-5 rounded cursor-pointer text-[#0071e3] accent-[#0071e3]"
+        />
+      </div>
+      <div className="ml-2 text-sm">
+        <label htmlFor={id} className="font-normal cursor-pointer">
+          {label}
+        </label>
+      </div>
+    </div>
+  );
 }
 
 export default function ColumnMapper({
@@ -147,23 +178,15 @@ export default function ColumnMapper({
                 {/* Colunas a Incluir */}
                 <div>
                   <Label className="block text-sm text-[#86868b] mb-1">Colunas a Incluir</Label>
-                  <div className="space-y-2 mt-2">
+                  <div className="space-y-2 mt-2 max-h-60 overflow-y-auto pr-2">
                     {sourceColumns.map(column => (
-                      <div key={column} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          id={`source-col-${column}`}
-                          checked={selectedSourceColumns.includes(column)}
-                          onChange={(e) => handleSourceColumnToggle(column, e.target.checked)}
-                          className="h-5 w-5 rounded text-[#0071e3] accent-[#0071e3]"
-                        />
-                        <Label 
-                          htmlFor={`source-col-${column}`}
-                          className="ml-2 text-sm font-normal"
-                        >
-                          {column}
-                        </Label>
-                      </div>
+                      <CheckboxItem
+                        key={column}
+                        id={`source-col-${column}`}
+                        label={column}
+                        checked={selectedSourceColumns.includes(column)}
+                        onChange={(checked) => handleSourceColumnToggle(column, checked)}
+                      />
                     ))}
                   </div>
                 </div>
@@ -195,23 +218,15 @@ export default function ColumnMapper({
                 {/* Colunas a Incluir */}
                 <div>
                   <Label className="block text-sm text-[#86868b] mb-1">Colunas a Incluir</Label>
-                  <div className="space-y-2 mt-2">
+                  <div className="space-y-2 mt-2 max-h-60 overflow-y-auto pr-2">
                     {lookupColumns.map(column => (
-                      <div key={column} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          id={`lookup-col-${column}`}
-                          checked={selectedLookupColumns.includes(column)}
-                          onChange={(e) => handleLookupColumnToggle(column, e.target.checked)}
-                          className="h-5 w-5 rounded text-[#0071e3] accent-[#0071e3]"
-                        />
-                        <Label 
-                          htmlFor={`lookup-col-${column}`}
-                          className="ml-2 text-sm font-normal"
-                        >
-                          {column}
-                        </Label>
-                      </div>
+                      <CheckboxItem
+                        key={column}
+                        id={`lookup-col-${column}`}
+                        label={column}
+                        checked={selectedLookupColumns.includes(column)}
+                        onChange={(checked) => handleLookupColumnToggle(column, checked)}
+                      />
                     ))}
                   </div>
                 </div>
